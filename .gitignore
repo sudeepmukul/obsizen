@@ -1,0 +1,24 @@
+# Environment Variables
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+myvenv/
+venv/
+.envrc
+
+# Chroma Database
+obsidian_db/
+
+# IDE
+.vscode/
+.idea/
+
+# OS Files
+.DS_Store
+Thumbs.db
