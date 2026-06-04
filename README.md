@@ -1,21 +1,46 @@
 # OBSIZEN :)
 
-A Retrieval-Augmented Generation (RAG) system for chatting with an Obsidian knowledge base using LangChain, ChromaDB, Hugging Face embeddings, CUDA acceleration, and DeepSeek via OpenRouter.
+**Turn your Obsidian vault into a searchable AI knowledge base.**
 
-## Overview
+OBSIZEN is an open-source Retrieval-Augmented Generation (RAG) system that allows you to chat with your Obsidian notes using semantic search, vector embeddings, ChromaDB, and modern Large Language Models.
 
-OBSIZEN transforms an Obsidian vault into a searchable semantic knowledge base.
+Instead of manually searching through folders, tags, and hundreds of Markdown files, simply ask questions in natural language and receive grounded answers sourced directly from your notes.
 
-Instead of manually searching through hundreds of notes, the system:
+---
 
-1. Loads Markdown notes from an Obsidian vault.
-2. Splits notes into smaller chunks.
-3. Converts chunks into vector embeddings using a Sentence Transformer model.
-4. Stores embeddings in ChromaDB.
-5. Retrieves relevant note chunks based on semantic similarity.
-6. Sends retrieved context to an LLM for grounded answers.
+## ✨ Features
 
-This allows natural language querying of personal notes while reducing hallucinations by restricting responses to information found within the vault.
+*  Semantic Search over Obsidian notes
+*  Retrieval-Augmented Generation (RAG)
+*  Source-aware responses
+*  ChromaDB vector storage
+*  Hugging Face embedding models
+*  OpenRouter + DeepSeek integration
+*  CUDA acceleration support
+*  Configurable Obsidian vault paths
+*  Modular architecture for future expansion
+
+---
+
+## Why OBSIZEN?
+
+Traditional note-taking systems excel at storing information.
+
+OBSIZEN focuses on retrieving information.
+
+Instead of asking:
+
+> "Where did I save that note?"
+
+you can ask:
+
+> "What were my startup ideas for Zency?"
+>
+> "Explain RAG from my notes."
+>
+> "What projects am I currently working on?"
+
+and receive answers grounded in your own knowledge base.
 
 ---
 
@@ -28,19 +53,19 @@ Obsidian Vault
 Markdown Loader
       │
       ▼
-Text Chunking
+Chunking
       │
       ▼
-Sentence Transformer Embeddings
+Embedding Model
       │
       ▼
-Chroma Vector Database
+ChromaDB
       │
       ▼
 Semantic Retrieval
       │
       ▼
-DeepSeek LLM (OpenRouter)
+LLM Context Injection
       │
       ▼
 Grounded Answer
@@ -48,70 +73,18 @@ Grounded Answer
 
 ---
 
-## Technologies Used
+## Tech Stack
 
-* Python
-* LangChain
-* ChromaDB
-* Hugging Face Sentence Transformers
-* DeepSeek Chat
-* OpenRouter API
-* NVIDIA CUDA
-* Obsidian
-
----
-
-## Features
-
-### Semantic Search
-
-Unlike traditional keyword search, queries are converted into embeddings and matched based on meaning.
-
-Example:
-
-**Query**
-
-```text
-How do generators reduce memory usage?
-```
-
-Can successfully retrieve notes containing:
-
-```text
-Python generators save RAM by yielding values lazily.
-```
-
-even when exact keywords differ.
-
----
-
-### Retrieval-Augmented Generation (RAG)
-
-The language model does not answer from its training data alone.
-
-Workflow:
-
-1. Search vector database.
-2. Retrieve most relevant note chunks.
-3. Inject retrieved notes into the prompt.
-4. Generate an answer using only retrieved context.
-
-Prompt grounding reduces hallucinations and keeps responses tied to personal notes.
-
----
-
-### CUDA Acceleration
-
-Embedding generation is accelerated using an NVIDIA RTX 3050 Laptop GPU.
-
-PyTorch CUDA support enables GPU-based embedding computation, significantly reducing indexing time for large Obsidian vaults.
-
-```python
-embeddings = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2",
-    model_kwargs={"device": "cuda"}
-)
-```
+| Component       | Technology                         |
+| --------------- | ---------------------------------- |
+| Language        | Python                             |
+| Framework       | LangChain                          |
+| Vector Database | ChromaDB                           |
+| Embeddings      | Hugging Face Sentence Transformers |
+| LLM Provider    | OpenRouter                         |
+| Default Model   | DeepSeek Chat                      |
+| Notes Platform  | Obsidian                           |
+| Acceleration    | NVIDIA CUDA                        |
 
 ---
 
@@ -120,88 +93,52 @@ embeddings = HuggingFaceEmbeddings(
 ```text
 OBSIZEN/
 │
-├── ask.py
-├── build_v.py
-├── requirements.txt
-├── README.md
-├── .env.example
-├── .gitignore
+├── src/
+│   ├── main.py
+│   │
+│   ├── core/
+│   │   ├── embeddings.py
+│   │   ├── indexing.py
+│   │   └── retrieval.py
+│   │
+│   ├── llm/
+│   │   └── openrouter.py
+│   │
+│   ├── ui/
+│   │   └── cli.py
+│   │
+│   └── config.py
 │
-└── obsidian_db/
+├── data/
+│   └── obsidian_db/
+│
+├── NotesSimpleRAG/
+│
+├── config.yaml
+├── .env.example
+├── requirements.txt
+└── README.md
 ```
 
 ---
 
-## Indexing Pipeline
+## Installation
 
-The indexing script:
-
-* Recursively scans Markdown files.
-* Loads note contents.
-* Splits notes into overlapping chunks.
-* Generates vector embeddings.
-* Stores embeddings in ChromaDB.
-
-```python
-splitter = RecursiveCharacterTextSplitter(
-    chunk_size=500,
-    chunk_overlap=50
-)
-```
-
-Each chunk becomes a searchable vector representation.
-
----
-
-## Query Pipeline
-
-When a question is asked:
-
-```text
-User Question
-      │
-      ▼
-Embedding Generation
-      │
-      ▼
-Vector Similarity Search
-      │
-      ▼
-Top Relevant Chunks
-      │
-      ▼
-Prompt Construction
-      │
-      ▼
-DeepSeek Response
-```
-
-Example:
-
-```text
-Ask: What are embeddings?
-```
-
-The system retrieves the most relevant notes and uses them as context for the response.
-
----
-
-## Setup
-
-### Clone Repository
+### 1. Clone Repository
 
 ```bash
-git clone <repository-url>
-cd OBSIZEN
+git clone https://github.com/your-username/obsizen.git
+
+cd obsizen
 ```
 
-### Create Virtual Environment
+### 2. Create Virtual Environment
 
 ```bash
 python -m venv myvenv
 ```
 
-### Activate Environment
+### 3. Activate Environment
 
 Windows:
 
@@ -209,68 +146,150 @@ Windows:
 myvenv\Scripts\activate
 ```
 
-### Install Dependencies
+Linux / macOS:
+
+```bash
+source myvenv/bin/activate
+```
+
+### 4. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Configure Environment Variables
+---
 
-Create a `.env` file:
+## Configuration
+
+### Create `.env`
 
 ```env
-OPENROUTER_API_KEY=your_api_key_here
+OPENROUTER_API_KEY=your_openrouter_api_key
 ```
 
-### Build Vector Database
+### Configure `config.yaml`
 
-```bash
-python build_v.py
-```
+```yaml
+vault:
+  path: "YOUR_OBSIDIAN_VAULT_PATH"
 
-### Start Chat Interface
+retrieval:
+  top_k: 10
 
-```bash
-python ask.py
+index:
+  chunk_size: 800
+  chunk_overlap: 100
+
+embedding:
+  model: "BAAI/bge-small-en-v1.5"
+
+llm:
+  model: "deepseek/deepseek-chat"
 ```
 
 ---
 
-## Example Session
+## Usage
+
+Start OBSIZEN:
+
+```bash
+python src/main.py
+```
+
+On first run:
 
 ```text
-Ask: What is LangChain?
+No index found.
+Building index...
+```
 
-============================================================
-ANSWER
-============================================================
+OBSIZEN automatically:
 
-LangChain is a framework used for building applications
-powered by large language models...
+* Loads notes
+* Creates chunks
+* Generates embeddings
+* Builds ChromaDB
 
-SOURCES:
-- AI/LangChain.md
-- Projects/RAG.md
+After indexing:
+
+```text
+ObsiZen Ready!
+
+Ask:
+>
 ```
 
 ---
 
-## Future Improvements
+## Example
 
-* Metadata-aware retrieval
-* Hybrid Search (Vector + BM25)
-* Reranking models
-* Conversational memory
-* Markdown-aware chunking
-* Multi-vault support
-* Local LLM support
-* Streamlit/Web UI
-* Source citations inside answers
+```text
+Ask:
+What is Retrieval-Augmented Generation?
+
+Answer:
+
+Retrieval-Augmented Generation (RAG) combines
+vector retrieval with Large Language Models
+to generate answers grounded in external data.
+
+Sources:
+📄 RAG.md
+📄 LangChain.md
+```
 
 ---
 
+## Current Roadmap for Future Versions (open to contributions)
 
-This project was built to explore modern Retrieval-Augmented Generation systems and create a practical AI assistant capable of searching and reasoning over a personal Obsidian knowledge base.
+### v1.x
 
-It demonstrates core concepts used in production RAG systems, including vector embeddings, semantic retrieval, context injection, and GPU-accelerated indexing.
+* Semantic Search
+* ChromaDB Integration
+* OpenRouter Support
+* Configurable Vaults
+* Modular Architecture
+
+### v2.x
+
+* Hybrid Search (BM25 + Vector)
+* Reranking Models
+* Metadata Filtering
+* Improved Citations
+* Better Chunking Strategies
+
+### v3.x
+
+* Ollama Support
+* Local LLM Support
+* MCP Integration
+* Research Agent
+* Multi-Vault Search
+
+---
+
+## Contributing
+
+Contributions, ideas, bug reports, and pull requests are welcome.
+
+If you find a bug or have an idea for improving retrieval quality, feel free to open an issue.
+
+---
+
+## Disclaimer
+
+OBSIZEN is an educational and experimental project focused on exploring Retrieval-Augmented Generation systems, semantic search, and personal knowledge management.
+
+Always verify important information directly from your notes.
+
+---
+
+## License
+
+MIT License
+
+---
+
+Built with Caffine lol, Python, and a growing obsession with knowledge retrieval.
