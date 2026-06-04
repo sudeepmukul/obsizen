@@ -8,7 +8,7 @@ Instead of manually searching through folders, tags, and hundreds of Markdown fi
 
 ---
 
-## ✨ Features
+## :D Features
 
 *  Semantic Search over Obsidian notes
 *  Retrieval-Augmented Generation (RAG)
