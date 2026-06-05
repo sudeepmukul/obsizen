@@ -8,7 +8,7 @@ venv/
 
 # Chroma Database
 data/obsidian_db/
-
+data/chunks.pkl
 # Python Cache
 __pycache__/
 *.pyc
