@@ -30,7 +30,4 @@ class BM25Retriever:
             reverse=True
         )
 
-        return [
-            doc for doc, _
-            in ranked[:k]
-        ]
+        return ranked[:k]

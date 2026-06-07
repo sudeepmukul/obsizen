@@ -4,8 +4,9 @@ import pickle
 from core.bm25 import BM25Retriever
 from config import CONFIG
 from core.embeddings import get_embeddings
+from core.reranker import Reranker #1.3.2 ADDition hehe
 
-
+reranker = Reranker()
 def get_db():
 
     return Chroma(
@@ -28,35 +29,99 @@ def get_bm25():
 
 def retrieve(query):
 
-    db = get_db()
+    
 
     bm25 = get_bm25()
 
-    vector_docs = db.similarity_search(
+    vector_results = vector_search(
+    query,
+    k=CONFIG["retrieval"]["top_k"]
+)
+
+    bm25_results = bm25.search(
+    query,
+    k=CONFIG["retrieval"]["top_k"]
+)
+
+    docs = fuse_results( #v1.3.2 Reranker Addition
+    vector_results,
+    bm25_results
+)
+
+    docs = reranker.rerank(
+    query,
+    docs,
+    top_k=5
+)
+
+    return docs
+
+def vector_search(query, k=10): #Vector Search Damn bro v1.3.2 Addition
+
+    db = get_db()
+
+    results = db.similarity_search_with_relevance_scores(
         query,
-        k=5
+        k=k
     )
 
-    keyword_docs = bm25.search(
-        query,
-        k=5
+    return results
+
+def fuse_results( #Fusion Function Damn bro v1.3.2 Addition
+    vector_results,
+    bm25_results
+):
+
+    scores = {}
+
+    for doc, score in vector_results:
+
+        key = doc.page_content
+
+        scores[key] = {
+            "doc": doc,
+            "score": score * 2
+        }
+
+    for doc, score in bm25_results:
+
+        key = doc.page_content
+
+        if key not in scores:
+
+            scores[key] = {
+                "doc": doc,
+                "score": score
+            }
+
+        else:
+
+            scores[key]["score"] += score
+
+    ranked = sorted(
+        scores.values(),
+        key=lambda x: x["score"],
+        reverse=True
+    )
+    print("\n=== HYBRID RESULTS ===")
+
+    for i, item in enumerate(ranked[:10]):
+
+        source = item["doc"].metadata.get(
+        "source",
+        "unknown"
     )
 
-    combined = []
+    print(
+        f"{i+1}. {source} | "
+        f"{round(item['score'], 2)}"
+    )
+    
 
-    seen = set()
-
-    for doc in vector_docs + keyword_docs:
-
-        content = doc.page_content
-
-        if content not in seen:
-
-            seen.add(content)
-
-            combined.append(doc)
-
-    return combined[:10]
+    return [
+        item["doc"]
+        for item in ranked[:10]
+    ]
     '''db = get_db() #Old Semantic Search Only Version - Intent 6/6/26
 
     docs = db.similarity_search(
