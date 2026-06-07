@@ -55,3 +55,14 @@ QUESTION:
                 shown.add(filename)
 
         print("\n")
+        print("\n=== RERANKED RESULTS ===")
+
+        for i, doc in enumerate(docs):
+
+          print(
+              f"{i+1}.",
+              doc.metadata.get(
+                 "source",
+                "unknown"
+        )
+    )

@@ -5,6 +5,8 @@ from langchain_community.vectorstores import Chroma
 from config import CONFIG
 from core.embeddings import get_embeddings
 
+import pickle
+import os
 
 def build_index():
 
@@ -31,7 +33,17 @@ def build_index():
     )
 
     chunks = splitter.split_documents(docs)
+    os.makedirs("data", exist_ok=True)
 
+    with open(
+    "data/chunks.pkl",
+    "wb"
+    ) as f:
+
+      pickle.dump(
+        chunks,
+        f
+    )
     print(f"Created {len(chunks)} chunks")
 
     db = Chroma.from_documents(
