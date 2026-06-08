@@ -1,8 +1,19 @@
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from config import CONFIG
 
+_embeddings = None
+
+
 def get_embeddings():
 
-    return HuggingFaceEmbeddings(
-        model_name=CONFIG["embedding"]["model"]
-    )
+    global _embeddings
+
+    if _embeddings is None:
+
+        print("Loading Embedding Model...")
+
+        _embeddings = HuggingFaceEmbeddings(
+            model_name=CONFIG["embedding"]["model"]
+        )
+
+    return _embeddings

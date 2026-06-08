@@ -5,27 +5,56 @@ from core.bm25 import BM25Retriever
 from config import CONFIG
 from core.embeddings import get_embeddings
 from core.reranker import Reranker #1.3.2 ADDition hehe
+_db = None
+_bm25 = None
+_reranker = None
 
-reranker = Reranker()
 def get_db():
 
-    return Chroma(
-        persist_directory="data/obsidian_db",
-        embedding_function=get_embeddings()
-    )
+    global _db
+
+    if _db is None:
+
+        print("Loading Chroma DB...")
+
+        _db = Chroma(
+            persist_directory="data/obsidian_db",
+            embedding_function=get_embeddings()
+        )
+
+    return _db
 def get_bm25():
 
-    with open(
-        "data/chunks.pkl",
-        "rb"
-    ) as f:
+    global _bm25
 
-        chunks = pickle.load(f)
+    if _bm25 is None:
 
-    return BM25Retriever(
-        chunks
-    )
+        print("Loading BM25...")
 
+        with open(
+            "data/chunks.pkl",
+            "rb"
+        ) as f:
+
+            chunks = pickle.load(f)
+
+        _bm25 = BM25Retriever(
+            chunks
+        )
+
+    return _bm25
+
+def get_reranker():
+
+    global _reranker
+
+    if _reranker is None:
+
+        print("Loading Reranker...")
+
+        _reranker = Reranker()
+
+    return _reranker
 
 def retrieve(query):
 
@@ -48,10 +77,10 @@ def retrieve(query):
     bm25_results
 )
 
-    docs = reranker.rerank(
+    docs = get_reranker().rerank(
     query,
     docs,
-    top_k=5
+    top_k=4
 )
 
     return docs
@@ -112,10 +141,10 @@ def fuse_results( #Fusion Function Damn bro v1.3.2 Addition
         "unknown"
     )
 
-    print(
-        f"{i+1}. {source} | "
-        f"{round(item['score'], 2)}"
-    )
+        print(
+            f"{i+1}. {source} | "
+            f"{round(item['score'], 2)}"
+        )
     
 
     return [
