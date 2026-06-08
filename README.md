@@ -1,24 +1,28 @@
-# OBSIZEN :)
+# OBSIZEN
 
 **Turn your Obsidian vault into a searchable AI knowledge base.**
 
-OBSIZEN is an open-source Retrieval-Augmented Generation (RAG) system that allows you to chat with your Obsidian notes using semantic search, vector embeddings, ChromaDB, and modern Large Language Models.
+OBSIZEN is an open-source Retrieval-Augmented Generation (RAG) system that enables natural language interaction with Obsidian notes. It combines semantic search, keyword search, reranking, vector databases, and modern Large Language Models to provide grounded answers directly from your personal knowledge base.
 
-Instead of manually searching through folders, tags, and hundreds of Markdown files, simply ask questions in natural language and receive grounded answers sourced directly from your notes.
+Instead of manually searching through folders, tags, and hundreds of Markdown files, simply ask questions and receive answers backed by your notes.
 
 ---
 
 ## :D Features
+## Features
 
-*  Semantic Search over Obsidian notes
-*  Retrieval-Augmented Generation (RAG)
-*  Source-aware responses
-*  ChromaDB vector storage
-*  Hugging Face embedding models
-*  OpenRouter + DeepSeek integration
-*  CUDA acceleration support
-*  Configurable Obsidian vault paths
-*  Modular architecture for future expansion
+* Semantic Search over Obsidian notes
+* Hybrid Retrieval (Vector Search + BM25)
+* Cross-Encoder Reranking
+* Retrieval-Augmented Generation (RAG)
+* Source-aware responses
+* ChromaDB vector storage
+* Hugging Face embedding models
+* OpenRouter LLM integration
+* CUDA acceleration support
+* Configurable Obsidian vault paths
+* Startup model caching and preloading
+* Modular architecture designed for extensibility
 
 ---
 
@@ -30,15 +34,17 @@ OBSIZEN focuses on retrieving information.
 
 Instead of asking:
 
-> "Where did I save that note?"
+> Where did I save that note?
 
-you can ask:
+You can ask:
 
-> "What were my startup ideas for Zency?"
->
-> "Explain RAG from my notes."
->
-> "What projects am I currently working on?"
+> What were my startup ideas for Zency?
+
+> Explain Retrieval-Augmented Generation from my notes.
+
+> What projects am I currently working on?
+
+> What did I learn about LangChain?
 
 and receive answers grounded in your own knowledge base.
 
@@ -48,43 +54,83 @@ and receive answers grounded in your own knowledge base.
 
 ```text
 Obsidian Vault
-      │
-      ▼
+       │
+       ▼
 Markdown Loader
-      │
-      ▼
-Chunking
-      │
-      ▼
-Embedding Model
-      │
-      ▼
+       │
+       ▼
+Document Chunking
+       │
+       ▼
+Embedding Generation
+       │
+       ▼
 ChromaDB
-      │
-      ▼
-Semantic Retrieval
-      │
-      ▼
-LLM Context Injection
-      │
-      ▼
-Grounded Answer
+       │
+       ▼
+Semantic Search
+       │
+       ├───────────────┐
+       ▼               ▼
+Vector Retrieval   BM25 Retrieval
+       │               │
+       └───────┬───────┘
+               ▼
+         Score Fusion
+               ▼
+   Cross-Encoder Reranker
+               ▼
+        Context Builder
+               ▼
+        LLM Generation
+               ▼
+        Grounded Answer
 ```
 
 ---
 
-## Tech Stack
+## Technology Stack
 
-| Component       | Technology                         |
-| --------------- | ---------------------------------- |
-| Language        | Python                             |
-| Framework       | LangChain                          |
-| Vector Database | ChromaDB                           |
-| Embeddings      | Hugging Face Sentence Transformers |
-| LLM Provider    | OpenRouter                         |
-| Default Model   | DeepSeek Chat                      |
-| Notes Platform  | Obsidian                           |
-| Acceleration    | NVIDIA CUDA                        |
+| Component       | Technology                |
+| --------------- | ------------------------- |
+| Language        | Python                    |
+| Framework       | LangChain                 |
+| Vector Database | ChromaDB                  |
+| Embeddings      | Hugging Face Transformers |
+| Retrieval       | BM25 + Vector Search      |
+| Reranking       | Cross-Encoder             |
+| LLM Provider    | OpenRouter                |
+| Default Model   | DeepSeek Chat             |
+| Notes Platform  | Obsidian                  |
+| Acceleration    | NVIDIA CUDA               |
+
+---
+
+## Why ObsiZen Is Different
+
+Many personal RAG projects stop at:
+
+```text
+Vault
+ ↓
+Embeddings
+ ↓
+ChromaDB
+ ↓
+LLM
+```
+
+OBSIZEN goes further by incorporating:
+
+* Hybrid Retrieval
+* BM25 Keyword Search
+* Semantic Vector Search
+* Cross-Encoder Reranking
+* Startup Model Caching
+* Modular Architecture
+* Future Metadata-Aware Retrieval
+
+The goal is to evolve from a simple note chatbot into a high-quality personal knowledge retrieval system.
 
 ---
 
@@ -94,12 +140,15 @@ Grounded Answer
 OBSIZEN/
 │
 ├── src/
+│   │
 │   ├── main.py
 │   │
 │   ├── core/
 │   │   ├── embeddings.py
 │   │   ├── indexing.py
-│   │   └── retrieval.py
+│   │   ├── retrieval.py
+│   │   ├── reranker.py
+│   │   └── bm25.py
 │   │
 │   ├── llm/
 │   │   └── openrouter.py
@@ -110,13 +159,14 @@ OBSIZEN/
 │   └── config.py
 │
 ├── data/
-│   └── obsidian_db/
+│   ├── obsidian_db/
+│   └── chunks.pkl
 │
 ├── NotesSimpleRAG/
 │
 ├── config.yaml
-├── .env.example
 ├── requirements.txt
+├── .env.example
 └── README.md
 ```
 
@@ -124,7 +174,7 @@ OBSIZEN/
 
 ## Installation
 
-### 1. Clone Repository
+### Clone Repository
 
 ```bash
 git clone https://github.com/your-username/obsizen.git
@@ -132,13 +182,13 @@ git clone https://github.com/your-username/obsizen.git
 cd obsizen
 ```
 
-### 2. Create Virtual Environment
+### Create Virtual Environment
 
 ```bash
 python -m venv myvenv
 ```
 
-### 3. Activate Environment
+### Activate Environment
 
 Windows:
 
@@ -146,13 +196,13 @@ Windows:
 myvenv\Scripts\activate
 ```
 
-Linux / macOS:
+Linux/macOS:
 
 ```bash
 source myvenv/bin/activate
 ```
 
-### 4. Install Dependencies
+### Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -162,10 +212,10 @@ pip install -r requirements.txt
 
 ## Configuration
 
-### Create `.env`
+### Create a `.env` File
 
 ```env
-OPENROUTER_API_KEY=your_openrouter_api_key
+OPENROUTER_API_KEY=your_api_key_here
 ```
 
 ### Configure `config.yaml`
@@ -192,29 +242,32 @@ llm:
 
 ## Usage
 
-Start OBSIZEN:
+Start ObsiZen:
 
 ```bash
 python src/main.py
 ```
 
-On first run:
+On first launch:
 
 ```text
 No index found.
 Building index...
 ```
 
-OBSIZEN automatically:
+ObsiZen automatically:
 
-* Loads notes
-* Creates chunks
+* Loads Markdown notes
+* Splits documents into chunks
 * Generates embeddings
 * Builds ChromaDB
+* Creates BM25 indexes
 
-After indexing:
+Once initialization completes:
 
 ```text
+Loading ObsiZen...
+
 ObsiZen Ready!
 
 Ask:
@@ -232,40 +285,70 @@ What is Retrieval-Augmented Generation?
 Answer:
 
 Retrieval-Augmented Generation (RAG) combines
-vector retrieval with Large Language Models
+retrieval systems and Large Language Models
 to generate answers grounded in external data.
 
 Sources:
-📄 RAG.md
-📄 LangChain.md
+- RAG.md
+- LangChain.md
 ```
 
 ---
 
-## Current Roadmap for Future Versions (open to contributions)
+## Performance Optimizations
 
-### v1.x
+Current versions include:
 
-* Semantic Search
-* ChromaDB Integration
-* OpenRouter Support
-* Configurable Vaults
-* Modular Architecture
+* Embedding model caching
+* ChromaDB caching
+* BM25 caching
+* Reranker caching
+* Startup preloading
 
-### v2.x
+These optimizations reduce repeated initialization overhead and improve query responsiveness.
 
-* Hybrid Search (BM25 + Vector)
-* Reranking Models
-* Metadata Filtering
-* Improved Citations
-* Better Chunking Strategies
+---
 
-### v3.x
+## Roadmap
+
+### Completed
+
+#### v1.3.1
+
+* Hybrid Retrieval (BM25 + Vector Search)
+
+#### v1.3.2
+
+* Cross-Encoder Reranking
+
+#### v1.3.4
+
+* Embedding Cache
+* Chroma Cache
+* BM25 Cache
+* Reranker Cache
+* Startup Preloading
+
+### Upcoming
+
+#### v1.4.0
+
+* Metadata-Aware Retrieval
+* Markdown-Aware Chunking
+* Source Deduplication
+* Improved Entity Retrieval
+
+#### v1.5.0
+
+* FastAPI Backend
+* REST API
+* Better Integrations
+
+#### v2.0
 
 * Ollama Support
 * Local LLM Support
 * MCP Integration
-* Research Agent
 * Multi-Vault Search
 
 ---
@@ -274,15 +357,15 @@ Sources:
 
 Contributions, ideas, bug reports, and pull requests are welcome.
 
-If you find a bug or have an idea for improving retrieval quality, feel free to open an issue.
+If you have ideas for improving retrieval quality, chunking strategies, ranking systems, or user experience, feel free to open an issue or submit a pull request.
 
 ---
 
 ## Disclaimer
 
-OBSIZEN is an educational and experimental project focused on exploring Retrieval-Augmented Generation systems, semantic search, and personal knowledge management.
+OBSIZEN is an educational and experimental project focused on Retrieval-Augmented Generation, semantic search, and personal knowledge management.
 
-Always verify important information directly from your notes.
+Always verify important information directly from your source notes.
 
 ---
 
@@ -292,4 +375,4 @@ MIT License
 
 ---
 
-Built with Caffine lol, Python, and a growing obsession with knowledge retrieval.
+Built with Python, curiosity, and a growing obsession with knowledge retrieval.
