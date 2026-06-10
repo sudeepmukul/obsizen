@@ -56,6 +56,30 @@ def get_reranker():
 
     return _reranker
 
+def deduplicate_docs(docs):
+
+    unique_docs = []
+    seen_files = set()
+
+    for doc in docs:
+
+        filename = doc.metadata.get(
+            "filename",
+            ""
+        )
+
+        if filename not in seen_files:
+
+            seen_files.add(
+                filename
+            )
+
+            unique_docs.append(
+                doc
+            )
+
+    return unique_docs
+
 def retrieve(query):
 
     
@@ -71,19 +95,32 @@ def retrieve(query):
     query,
     k=CONFIG["retrieval"]["top_k"]
 )
-
-    docs = fuse_results( #v1.3.2 Reranker Addition
+    #v1.3.2 Reranker Addition Lol - Intent
+    docs = fuse_results( 
+    query,
     vector_results,
     bm25_results
+)   #deduplication addtion by intent for 1.4.1 
+    docs = deduplicate_docs(
+    docs
 )
 
     docs = get_reranker().rerank(
     query,
     docs,
-    top_k=4
-)
+    top_k=5
+)   
+    print("\n=== DEDUPED + RERANKED DOCS ===")
 
+    for doc in docs:
+
+        print(
+            f"{doc.metadata.get('folder','')}/"
+            f"{doc.metadata.get('filename','')}"
+    )
     return docs
+
+    
 
 def vector_search(query, k=10): #Vector Search Damn bro v1.3.2 Addition
 
@@ -97,6 +134,7 @@ def vector_search(query, k=10): #Vector Search Damn bro v1.3.2 Addition
     return results
 
 def fuse_results( #Fusion Function Damn bro v1.3.2 Addition
+    query,
     vector_results,
     bm25_results
 ):
@@ -126,7 +164,28 @@ def fuse_results( #Fusion Function Damn bro v1.3.2 Addition
         else:
 
             scores[key]["score"] += score
+    query_lower = query.lower()
+    for item in scores.values():
 
+        doc = item["doc"]
+
+        section = doc.metadata.get(
+        "section",
+        ""
+        ).lower()
+
+        title = doc.metadata.get(
+        "title",
+        ""
+        ).lower()
+
+        if section and section in query_lower:
+
+            item["score"] += 10
+
+        if title and title in query_lower:
+
+            item["score"] += 5
     ranked = sorted(
         scores.values(),
         key=lambda x: x["score"],
@@ -146,7 +205,9 @@ def fuse_results( #Fusion Function Damn bro v1.3.2 Addition
             f"{round(item['score'], 2)}"
         )
     
+    
 
+    
     return [
         item["doc"]
         for item in ranked[:10]
