@@ -79,7 +79,55 @@ def deduplicate_docs(docs):
             )
 
     return unique_docs
+def filename_search(query):
 
+    db = get_db()
+
+    query_words = set(
+        query.lower().split()
+    )
+
+    results = []
+
+    data = db.get()
+
+    for doc_text, metadata in zip(
+        data["documents"],
+        data["metadatas"]
+    ):
+
+        filename = metadata.get(
+            "filename",
+            ""
+        ).lower()
+
+        filename_words = set(
+            filename
+            .replace(".md", "")
+            .replace("-", " ")
+            .replace("_", " ")
+            .split()
+        )
+
+        overlap = (
+            query_words &
+            filename_words
+        )
+
+        if overlap:
+
+            from langchain_core.documents import Document
+
+            doc = Document(
+                page_content=doc_text,
+                metadata=metadata
+            )
+
+            results.append(
+                (doc, len(overlap) * 50)
+            )
+
+    return results
 def retrieve(query):
 
     
@@ -87,37 +135,64 @@ def retrieve(query):
     bm25 = get_bm25()
 
     vector_results = vector_search(
-    query,
-    k=CONFIG["retrieval"]["top_k"]
-)
+        query,
+        k=CONFIG["retrieval"]["top_k"]
+    )
 
     bm25_results = bm25.search(
-    query,
-    k=CONFIG["retrieval"]["top_k"]
-)
+        query,
+        k=CONFIG["retrieval"]["top_k"]
+    )
     #v1.3.2 Reranker Addition Lol - Intent
-    docs = fuse_results( 
-    query,
-    vector_results,
-    bm25_results
-)   #deduplication addtion by intent for 1.4.1 
-    docs = deduplicate_docs(
-    docs
+    filename_results = filename_search(
+    query
 )
 
-    docs = get_reranker().rerank(
+    docs = fuse_results(
     query,
-    docs,
-    top_k=5
-)   
-    print("\n=== DEDUPED + RERANKED DOCS ===")
+    vector_results + filename_results,
+    bm25_results
+)  #deduplication addtion by intent for 1.4.1 ,v2.1.1 filename 
+    docs = deduplicate_docs(
+        docs
+    )
+    priority_docs = []
+    other_docs = []
+
+    query_words = set(
+        query.lower().split()
+)
 
     for doc in docs:
 
+        filename = doc.metadata.get(
+            "filename",
+            ""
+        ).lower()
+
+        if any(
+            word in filename
+            for word in query_words
+        ):
+
+            priority_docs.append(doc)
+
+        else:
+            other_docs.append(doc)
+
+    docs = priority_docs + other_docs
+    docs = get_reranker().rerank(
+        query,
+        docs,
+        top_k=5
+    )
+    print("\n=== DEDUPED + RERANKED DOCS ===")
+
+    for doc in docs:
         print(
             f"{doc.metadata.get('folder','')}/"
             f"{doc.metadata.get('filename','')}"
-    )
+        )
     return docs
 
     
@@ -130,6 +205,15 @@ def vector_search(query, k=10): #Vector Search Damn bro v1.3.2 Addition
         query,
         k=k
     )
+
+    print("\n---VECTOR RESULTS---")
+
+    for doc, score in results:
+
+        print(
+            f"{doc.metadata.get('filename')} "
+            f"| {round(score,3)}"
+        )
 
     return results
 
@@ -164,28 +248,53 @@ def fuse_results( #Fusion Function Damn bro v1.3.2 Addition
         else:
 
             scores[key]["score"] += score
+
     query_lower = query.lower()
+
     for item in scores.values():
 
         doc = item["doc"]
 
         section = doc.metadata.get(
-        "section",
-        ""
+            "section",
+            ""
         ).lower()
 
         title = doc.metadata.get(
-        "title",
-        ""
+            "title",
+            ""
         ).lower()
 
-        if section and section in query_lower:
+        filename = doc.metadata.get(
+            "filename",
+            ""
+        ).lower()
 
+        # Section boost
+        if section and section in query_lower:
             item["score"] += 10
 
+        # Title boost
         if title and title in query_lower:
-
             item["score"] += 5
+
+        # Filename boost
+        filename_words = (
+            filename
+            .replace(".md", "")
+            .replace("-", " ")
+            .replace("_", " ")
+            .split()
+        )
+
+        query_words = query_lower.split()
+
+        if any(
+            word in filename_words
+            for word in query_words
+        ):
+            item["score"] += 15
+
     ranked = sorted(
         scores.values(),
         key=lambda x: x["score"],
@@ -196,27 +305,16 @@ def fuse_results( #Fusion Function Damn bro v1.3.2 Addition
     for i, item in enumerate(ranked[:10]):
 
         source = item["doc"].metadata.get(
-        "source",
-        "unknown"
-    )
+            "source",
+            "unknown"
+        )
 
         print(
             f"{i+1}. {source} | "
             f"{round(item['score'], 2)}"
         )
-    
-    
 
-    
     return [
         item["doc"]
         for item in ranked[:10]
     ]
-    '''db = get_db() #Old Semantic Search Only Version - Intent 6/6/26
-
-    docs = db.similarity_search(
-        query,
-        k=CONFIG["retrieval"]["top_k"]
-    )
-
-    return docs'''

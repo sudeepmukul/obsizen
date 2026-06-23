@@ -8,6 +8,15 @@ from core.retrieval import (
     get_bm25,
     get_reranker
 )
+from core.manifest import (
+    load_manifest,
+    get_vault_files,
+    get_changed_files,
+    update_manifest
+)
+
+from config import CONFIG
+from core.indexing import update_file_in_db
 from ui.cli import chat
 
 INDEX_PATH = Path("data/obsidian_db")
@@ -29,7 +38,39 @@ if __name__ == "__main__":
 
     # Preload everything into memory
     get_embeddings()
-    get_db()
+
+    db = get_db()
+
+    # Incremental indexing
+    manifest = load_manifest()
+
+    current_files = get_vault_files(
+    CONFIG["vault"]["path"]
+    )
+
+    changed_files = get_changed_files(
+        current_files,
+        manifest
+    )
+
+    print(
+        f"\nFound {len(changed_files)} changed files."
+    )
+
+    for file_path in changed_files:
+
+        update_file_in_db(
+            db,
+            file_path
+        )
+
+    # Save updated timestamps
+    update_manifest(
+        changed_files,
+        current_files,
+        manifest
+    )
+
     get_bm25()
     get_reranker()
 

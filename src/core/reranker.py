@@ -16,10 +16,35 @@ class Reranker:
         top_k=5
     ):
 
-        pairs = [
-            (query, doc.page_content)
-            for doc in docs
-        ]
+        if not docs:
+            return []
+
+        pairs = []
+
+        for doc in docs:
+
+            filename = doc.metadata.get(
+                "filename",
+                ""
+            )
+
+            section = doc.metadata.get(
+                "section",
+                ""
+            )
+
+            enriched_text = f"""
+Filename: {filename}
+
+Section: {section}
+
+Content:
+{doc.page_content}
+"""
+
+            pairs.append(
+                (query, enriched_text)
+            )
 
         scores = self.model.predict(
             pairs
