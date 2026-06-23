@@ -59,7 +59,8 @@ QUESTION:
 """
 
     response = llm.invoke(prompt)
-
+    print("\n=== CONTEXT SENT TO LLM ===")
+    print(context)
     print("\n" + "=" * 60)
     print("ANSWER")
     print("=" * 60)
