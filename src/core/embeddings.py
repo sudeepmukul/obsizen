@@ -1,5 +1,5 @@
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from config import CONFIG
+from src.config import CONFIG
 
 _embeddings = None
 

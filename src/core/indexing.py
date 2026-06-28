@@ -4,8 +4,8 @@ from langchain_text_splitters import (
     MarkdownHeaderTextSplitter,
     RecursiveCharacterTextSplitter
 )
-from config import CONFIG
-from core.embeddings import get_embeddings
+from src.config import CONFIG
+from src.core.embeddings import get_embeddings
 
 import pickle
 import os
@@ -129,7 +129,7 @@ def build_index():
     )
 
     print("Index built successfully!")
-    from core.manifest import (
+    from src.core.manifest import (
     save_manifest,
     get_vault_files
 )

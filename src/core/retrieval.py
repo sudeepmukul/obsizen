@@ -1,10 +1,10 @@
 from langchain_community.vectorstores import Chroma
 import pickle
 
-from core.bm25 import BM25Retriever
-from config import CONFIG
-from core.embeddings import get_embeddings
-from core.reranker import Reranker #1.3.2 ADDition hehe
+from src.core.bm25 import BM25Retriever
+from src.config import CONFIG
+from src.core.embeddings import get_embeddings
+from src.core.reranker import Reranker #1.3.2 ADDition hehe
 _db = None
 _bm25 = None
 _reranker = None

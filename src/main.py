@@ -15,7 +15,7 @@ from core.manifest import (
     update_manifest
 )
 
-from config import CONFIG
+from src.config import CONFIG
 from core.indexing import update_file_in_db
 from ui.cli import chat
 
