@@ -1,5 +1,5 @@
 from core.retrieval import retrieve
-from llm.openrouter import get_llm
+from src.llm.openrouter import get_llm
 
 
 def chat():
