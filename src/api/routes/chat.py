@@ -13,7 +13,7 @@ from src.llm.openrouter import ask
 
 router = APIRouter()
 
-
+'''
 @router.post(
     "/chat",
     response_model=ChatResponse
@@ -45,4 +45,16 @@ def chat_endpoint(
     return ChatResponse(
         answer=answer,
         sources=sources
+    )
+    '''
+@router.post("/chat", response_model=ChatResponse)
+def chat_endpoint(request: ChatRequest):
+
+    docs = retrieve(request.query)
+
+    answer = ask(request.query, docs)
+
+    return ChatResponse(
+        answer=answer,
+        sources=[]
     )

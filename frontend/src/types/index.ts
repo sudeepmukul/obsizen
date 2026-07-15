@@ -11,6 +11,7 @@ export interface Message {
   role: Role;
   content: string;
   sources?: Source[];
+  isError?: boolean;
 }
 
 export interface Chat {

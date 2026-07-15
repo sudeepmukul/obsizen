@@ -2,6 +2,7 @@ import ReactMarkdown from 'react-markdown';
 import type { Message } from '../../types';
 import { SourceChips } from './SourceChips';
 import { AnimatedLogo } from '../UI/AnimatedLogo';
+import { cn } from '../../utils/cn';
 
 export const AssistantMessage = ({ message }: { message: Message }) => {
   return (
@@ -10,7 +11,12 @@ export const AssistantMessage = ({ message }: { message: Message }) => {
         <AnimatedLogo className="[&>span]:hidden" />
       </div>
       <div className="flex-1 space-y-4 overflow-hidden">
-        <div className="prose prose-invert max-w-none text-text-primary prose-p:leading-relaxed prose-pre:bg-surface prose-pre:border prose-pre:border-border">
+        <div
+          className={cn(
+            "prose prose-invert max-w-none text-text-primary prose-p:leading-relaxed prose-pre:bg-surface prose-pre:border prose-pre:border-border",
+            message.isError && "opacity-90"
+          )}
+        >
           <ReactMarkdown>{message.content}</ReactMarkdown>
         </div>
         {message.sources && <SourceChips sources={message.sources} />}

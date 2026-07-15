@@ -1,12 +1,10 @@
 import axios from 'axios';
 
-// Create a base axios instance. 
-// In the future this will point to the actual FastAPI backend (e.g., http://localhost:8000)
+// Axios instance pointing to the FastAPI backend
 export const api = axios.create({
-  baseURL: '/api',
+  baseURL: 'http://127.0.0.1:8000/api',
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 120000, // 120s — first request loads ML models, which can be slow
 });
-
-// We can add interceptors here later if needed for auth or error handling

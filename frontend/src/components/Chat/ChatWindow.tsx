@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../../store/useStore';
+import { chatService } from '../../services/chat';
 import { MessageBubble } from './MessageBubble';
 import { ThinkingIndicator } from './ThinkingIndicator';
 import { QuickPrompts } from '../Input/QuickPrompts';
@@ -27,12 +28,9 @@ export const ChatWindow = () => {
     addMessage(userMessage);
     setIsLoading(true);
 
-    import('../../services/chat').then(({ chatService }) => {
-      chatService.sendMessage(prompt, messages).then((response) => {
-        addMessage(response);
-        setIsLoading(false);
-      });
-    });
+    const response = await chatService.sendMessage(prompt, messages);
+    addMessage(response);
+    setIsLoading(false);
   };
 
   return (
