@@ -1,53 +1,56 @@
 <div align="center">
 
-#  Obsizen :)
+<img src="./assets/banner.png" alt="OBSIZEN Banner" width="100%" />
 
-### <em>Your one-line project tagline goes here.</em>
+# 🌌 OBSIZEN
+
+### Transform your Obsidian vault into an intelligent AI knowledge companion.
 
 <p>
   <a href="https://github.com/sudeepmukul/obsizen/stargazers">
-    <img src="https://img.shields.io/github/stars/sudeepmukul/obsizen?style=for-the-badge" />
+    <img src="https://img.shields.io/github/stars/sudeepmukul/obsizen?style=for-the-badge&logo=github" />
   </a>
   <a href="https://github.com/sudeepmukul/obsizen/network/members">
-    <img src="https://img.shields.io/github/forks/sudeepmukul/obsizen?style=for-the-badge" />
+    <img src="https://img.shields.io/github/forks/sudeepmukul/obsizen?style=for-the-badge&logo=github" />
   </a>
   <a href="https://github.com/sudeepmukul/obsizen/issues">
-    <img src="https://img.shields.io/github/issues/sudeepmukul/obsizen?style=for-the-badge" />
+    <img src="https://img.shields.io/github/issues/sudeepmukul/obsizen?style=for-the-badge&logo=github" />
   </a>
   <a href="LICENSE">
     <img src="https://img.shields.io/github/license/sudeepmukul/obsizen?style=for-the-badge" />
   </a>
+  <img src="https://img.shields.io/badge/Open%20Source-❤️-red?style=for-the-badge" />
 </p>
 
 <p>
-  <img src="./assets/banner.png" width="100%" alt="Obsizen Banner">
+  <strong>Your second brain just got a search engine and an AI assistant.</strong>
 </p>
 
-<p>
-  <b>✨ Built with passion. Designed for developers. Open for everyone.</b>
-</p>
-
-[🚀 Demo](#-demo) •
-[📖 Documentation](#-installation) •
 [✨ Features](#-features) •
-[🤝 Contributing](#-contributing)
+[🏗 Architecture](#-architecture) •
+[🚀 Getting Started](#-getting-started) •
+[📖 Usage](#-usage) •
+[🗺 Roadmap](#-roadmap)
 
 </div>
 
 ---
 
-# 🌟 What is Obsizen?
+# 🧠 What is OBSIZEN?
 
-> A short, powerful introduction.
+**OBSIZEN** is an open-source **Retrieval-Augmented Generation (RAG)** system built specifically for **Obsidian** users.
 
-Obsizen is a **[describe your project]** that helps developers **[main benefit]**.
+Instead of manually digging through hundreds or thousands of notes, OBSIZEN turns your vault into an intelligent knowledge companion that can:
+
+* 🔍 Search semantically across your notes
+* 📄 Understand filenames and metadata
+* 🧩 Combine multiple retrieval strategies
+* 🎯 Rerank results for better answers
+* 🤖 Generate grounded responses using LLMs
 
 Think of it as:
 
-- ⚡ Fast
-- 🎯 Simple
-- 🛠 Extensible
-- 🌍 Open Source
+> **ChatGPT for your Obsidian vault, except it actually knows your notes.**
 
 ---
 
@@ -57,18 +60,25 @@ Think of it as:
 <tr>
 <td width="50%">
 
-### 🚀 Performance
-- Lightning fast
-- Optimized architecture
-- Minimal overhead
+### 🔎 Hybrid Retrieval
+
+Combines:
+
+* Vector Search
+* BM25 Search
+* Filename Search
 
 </td>
 <td width="50%">
 
-### 🎨 Developer Experience
-- Easy setup
-- Clean APIs
-- Great documentation
+### 🏷 Metadata Awareness
+
+Understands:
+
+* Tags
+* Frontmatter
+* File structure
+* Document context
 
 </td>
 </tr>
@@ -76,18 +86,20 @@ Think of it as:
 <tr>
 <td>
 
-### 🔌 Extensible
-- Plugin friendly
-- Customizable
-- Modular design
+### ⚡ Fast & Efficient
+
+* Incremental indexing
+* Cached models
+* Reduced startup time
 
 </td>
 <td>
 
-### 🌎 Open Source
-- Community driven
-- MIT Licensed
-- Contributions welcome
+### 🎯 Better Answers
+
+* Source deduplication
+* CrossEncoder reranking
+* Grounded generation
 
 </td>
 </tr>
@@ -95,11 +107,11 @@ Think of it as:
 
 ---
 
-# 📸 Preview
+# 📸 Demo
 
 <div align="center">
 
-<img src="./assets/demo.gif" width="90%" alt="Demo GIF">
+<img src="./assets/demo.gif" width="90%" alt="OBSIZEN Demo"/>
 
 </div>
 
@@ -108,124 +120,173 @@ Think of it as:
 # 🏗 Architecture
 
 ```text
-┌────────────┐
-│   Client   │
-└─────┬──────┘
-      │
-      ▼
-┌────────────┐
-│  Obsizen   │
-└─────┬──────┘
-      │
-      ▼
-┌────────────┐
-│  Services  │
-└────────────┘
+                ┌────────────────┐
+                │ Obsidian Vault │
+                └────────┬───────┘
+                         │
+                         ▼
+               ┌──────────────────┐
+               │ Markdown Loader  │
+               └────────┬─────────┘
+                        │
+                        ▼
+          ┌───────────────────────────┐
+          │ Markdown Header Chunking  │
+          └────────┬──────────────────┘
+                   │
+                   ▼
+          ┌───────────────────────────┐
+          │ Embedding Generation      │
+          └────────┬──────────────────┘
+                   │
+                   ▼
+             ┌─────────────┐
+             │  ChromaDB   │
+             └──────┬──────┘
+                    │
+                    ▼
+     ┌───────────────────────────────────┐
+     │ Hybrid Retrieval Engine           │
+     │ Vector + BM25 + Filename Search   │
+     └───────────────────────────────────┘
+                    │
+                    ▼
+          ┌────────────────────┐
+          │ Metadata Boosting  │
+          └────────┬───────────┘
+                   │
+                   ▼
+         ┌─────────────────────┐
+         │ Source Deduplication│
+         └────────┬────────────┘
+                  │
+                  ▼
+         ┌─────────────────────┐
+         │ CrossEncoder Ranker │
+         └────────┬────────────┘
+                  │
+                  ▼
+         ┌─────────────────────┐
+         │   Context Builder   │
+         └────────┬────────────┘
+                  │
+                  ▼
+       ┌──────────────────────────┐
+       │ DeepSeek via OpenRouter  │
+       └───────────┬──────────────┘
+                   │
+                   ▼
+          🌌 Grounded AI Answer
 ```
 
 ---
 
-# ⚡ Installation
+# 🚀 Getting Started
 
-## Clone the repository
+## Clone the Repository
 
 ```bash
 git clone https://github.com/sudeepmukul/obsizen.git
 cd obsizen
 ```
 
-## Install dependencies
+## Install Dependencies
 
 ```bash
-npm install
-# or
-pnpm install
-# or
-yarn install
+pip install -r requirements.txt
 ```
 
-## Run locally
+## Configure
 
-```bash
-npm run dev
+Create your environment file:
+
+```env
+OPENROUTER_API_KEY=your_api_key
+OBSIDIAN_VAULT_PATH=/path/to/your/vault
 ```
 
 ---
 
-# 🚀 Usage
+# 📖 Usage
+
+## Build the Index
 
 ```bash
-obsizen start
+python src/main.py
 ```
 
-Or:
+## Ask Questions
 
-```js
-import Obsizen from "obsizen";
-
-const app = new Obsizen();
-app.start();
+```text
+What are my YC ideas?
+What did I learn about FastAPI?
+Summarize my ML notes.
+What projects am I procrastinating on?
 ```
+
+OBSIZEN retrieves relevant notes, reranks the results, and generates a grounded answer directly from your vault.
 
 ---
 
-# 🛠 Tech Stack
+# ⚙️ Tech Stack
 
 <p align="center">
 
-<img src="https://skillicons.dev/icons?i=typescript,nodejs,react,docker,postgres,redis,github" />
+<img src="https://skillicons.dev/icons?i=python,fastapi,react" />
 
 </p>
 
----
-
-# 📁 Project Structure
-
 ```text
-obsizen/
-├── src/
-├── docs/
-├── assets/
-├── tests/
-└── README.md
+LangChain
+ChromaDB
+SentenceTransformers
+CrossEncoder
+OpenRouter
+Python
 ```
 
 ---
 
 # 🗺 Roadmap
 
-- [x] Initial Release
-- [x] Core Features
-- [ ] Plugin System
-- [ ] CLI Improvements
-- [ ] Cloud Deployment
-- [ ] Dashboard
+* [x] Hybrid Retrieval
+* [x] Metadata Retrieval
+* [x] Incremental Indexing
+* [x] CrossEncoder Reranking
+* [ ] Logging System
+* [ ] Comprehensive Tests
+* [ ] Better Error Handling
+* [ ] FastAPI Backend
+* [ ] React Web UI
+* [ ] Local LLM Support
+* [ ] Docker Deployment
+* [ ] Obsidian Plugin
 
 ---
 
 # 🤝 Contributing
 
-Contributions are welcome!
+Contributions are welcome and greatly appreciated.
 
 ```bash
-fork 🍴
-clone 📥
-create-branch 🌿
-commit ✨
-open-pr 🚀
+Fork 🍴
+Clone 📥
+Create a Branch 🌿
+Commit ✨
+Open a Pull Request 🚀
 ```
 
-Please read the contribution guidelines before submitting a PR.
+If you have ideas, feature requests, or improvements, open an issue and let's build a better second brain together.
 
 ---
 
 # ⭐ Support the Project
 
-If you find Obsizen useful:
+If OBSIZEN helped you organize your knowledge and think better:
 
-🌟 Star the repository  
-🐛 Report issues  
-💡 Suggest features  
+🌟 Star the repository
+🐛 Report bugs
+💡 Suggest features
 🤝 Contribute code
 
 ---
@@ -234,12 +295,8 @@ If you find Obsizen useful:
 
 # 🌌 Built with ❤️ by Sudeep Mukul
 
-<p>
-  <a href="https://github.com/sudeepmukul">
-    <img src="https://img.shields.io/badge/GitHub-sudeepmukul-black?style=for-the-badge&logo=github">
-  </a>
-</p>
+### Transform your notes into an AI-powered second brain.
 
-### If this project helped you, consider giving it a ⭐
+**If this project helped you, consider giving it a ⭐**
 
 </div>
