@@ -1,105 +1,245 @@
-# :) OBSIZEN
+<div align="center">
 
-> Transform your Obsidian vault into an intelligent AI knowledge companion.
+#  Obsizen :)
 
-OBSIZEN is an open-source Retrieval-Augmented Generation (RAG) system designed specifically for Obsidian users.
+### <em>Your one-line project tagline goes here.</em>
 
-It combines semantic search, keyword search, metadata-aware retrieval, and reranking to provide grounded answers from your notes.
+<p>
+  <a href="https://github.com/sudeepmukul/obsizen/stargazers">
+    <img src="https://img.shields.io/github/stars/sudeepmukul/obsizen?style=for-the-badge" />
+  </a>
+  <a href="https://github.com/sudeepmukul/obsizen/network/members">
+    <img src="https://img.shields.io/github/forks/sudeepmukul/obsizen?style=for-the-badge" />
+  </a>
+  <a href="https://github.com/sudeepmukul/obsizen/issues">
+    <img src="https://img.shields.io/github/issues/sudeepmukul/obsizen?style=for-the-badge" />
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/github/license/sudeepmukul/obsizen?style=for-the-badge" />
+  </a>
+</p>
+
+<p>
+  <img src="./assets/banner.png" width="100%" alt="Obsizen Banner">
+</p>
+
+<p>
+  <b>✨ Built with passion. Designed for developers. Open for everyone.</b>
+</p>
+
+[🚀 Demo](#-demo) •
+[📖 Documentation](#-installation) •
+[✨ Features](#-features) •
+[🤝 Contributing](#-contributing)
+
+</div>
 
 ---
 
-## :D Features
-## Features
+# 🌟 What is Obsizen?
 
-- Hybrid Retrieval (Vector + BM25)
-- Metadata-Aware Retrieval
-- Filename Retrieval
-- Source Deduplication
-- CrossEncoder Reranking
-- Incremental Indexing
-- Cached Models for Fast Startup
-- Config-Driven Architecture
-- OpenRouter Integration
+> A short, powerful introduction.
+
+Obsizen is a **[describe your project]** that helps developers **[main benefit]**.
+
+Think of it as:
+
+- ⚡ Fast
+- 🎯 Simple
+- 🛠 Extensible
+- 🌍 Open Source
 
 ---
 
-## Architecture
+# ✨ Features
+
+<table>
+<tr>
+<td width="50%">
+
+### 🚀 Performance
+- Lightning fast
+- Optimized architecture
+- Minimal overhead
+
+</td>
+<td width="50%">
+
+### 🎨 Developer Experience
+- Easy setup
+- Clean APIs
+- Great documentation
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+### 🔌 Extensible
+- Plugin friendly
+- Customizable
+- Modular design
+
+</td>
+<td>
+
+### 🌎 Open Source
+- Community driven
+- MIT Licensed
+- Contributions welcome
+
+</td>
+</tr>
+</table>
+
+---
+
+# 📸 Preview
+
+<div align="center">
+
+<img src="./assets/demo.gif" width="90%" alt="Demo GIF">
+
+</div>
+
+---
+
+# 🏗 Architecture
 
 ```text
-Obsidian Vault
+┌────────────┐
+│   Client   │
+└─────┬──────┘
       │
       ▼
-Markdown Loader
+┌────────────┐
+│  Obsizen   │
+└─────┬──────┘
       │
       ▼
-Markdown Header Chunking
-      │
-      ▼
-Embedding Generation
-      │
-      ▼
-ChromaDB
-      │
-      ▼
-Hybrid Retrieval
-(Vector + BM25 + Filename Search)
-      │
-      ▼
-Metadata Boosting
-      │
-      ▼
-Source Deduplication
-      │
-      ▼
-CrossEncoder Reranker
-      │
-      ▼
-Context Builder
-      │
-      ▼
-DeepSeek via OpenRouter
-      │
-      ▼
-Grounded Answer
+┌────────────┐
+│  Services  │
+└────────────┘
 ```
-## Usage
 
-Build index:
+---
 
-python src/main.py
+# ⚡ Installation
 
-Ask questions:
+## Clone the repository
 
-Ask Away!
+```bash
+git clone https://github.com/sudeepmukul/obsizen.git
+cd obsizen
+```
 
-> What are my YC ideas?
-> What did I learn about FastAPI?
-> Summarize my ML notes.
+## Install dependencies
 
-Future Roadmap:
-Logging 
-Tests
-Error Handling
+```bash
+npm install
+# or
+pnpm install
+# or
+yarn install
+```
 
-FastAPI Backend
+## Run locally
 
-React Web UI
+```bash
+npm run dev
+```
 
-Local LLM Support
+---
 
-## Tech Stack
+# 🚀 Usage
+
+```bash
+obsizen start
+```
+
+Or:
+
+```js
+import Obsizen from "obsizen";
+
+const app = new Obsizen();
+app.start();
+```
+
+---
+
+# 🛠 Tech Stack
+
+<p align="center">
+
+<img src="https://skillicons.dev/icons?i=typescript,nodejs,react,docker,postgres,redis,github" />
+
+</p>
+
+---
+
+# 📁 Project Structure
+
 ```text
-LangChain
-ChromaDB
-SentenceTransformers
-CrossEncoder
-OpenRouter
-Python
+obsizen/
+├── src/
+├── docs/
+├── assets/
+├── tests/
+└── README.md
 ```
 
-## Contribution
-Pull requests are welcome.
+---
 
-## License 
-MIT License
+# 🗺 Roadmap
 
+- [x] Initial Release
+- [x] Core Features
+- [ ] Plugin System
+- [ ] CLI Improvements
+- [ ] Cloud Deployment
+- [ ] Dashboard
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+```bash
+fork 🍴
+clone 📥
+create-branch 🌿
+commit ✨
+open-pr 🚀
+```
+
+Please read the contribution guidelines before submitting a PR.
+
+---
+
+# ⭐ Support the Project
+
+If you find Obsizen useful:
+
+🌟 Star the repository  
+🐛 Report issues  
+💡 Suggest features  
+🤝 Contribute code
+
+---
+
+<div align="center">
+
+# 🌌 Built with ❤️ by Sudeep Mukul
+
+<p>
+  <a href="https://github.com/sudeepmukul">
+    <img src="https://img.shields.io/badge/GitHub-sudeepmukul-black?style=for-the-badge&logo=github">
+  </a>
+</p>
+
+### If this project helped you, consider giving it a ⭐
+
+</div>
