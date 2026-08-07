@@ -1,8 +1,7 @@
 <div align="center">
 
-<img src="./assets/banner.png" alt="OBSIZEN Banner" width="100%" />
 
-# 🌌 OBSIZEN
+# :) OBSIZEN
 
 ### Transform your Obsidian vault into an intelligent AI knowledge companion.
 
@@ -36,7 +35,7 @@
 
 ---
 
-# 🧠 What is OBSIZEN?
+# :O What is OBSIZEN?
 
 **OBSIZEN** is an open-source **Retrieval-Augmented Generation (RAG)** system built specifically for **Obsidian** users.
 
@@ -54,7 +53,7 @@ Think of it as:
 
 ---
 
-# ✨ Features
+# :D Features
 
 <table>
 <tr>
@@ -86,7 +85,7 @@ Understands:
 <tr>
 <td>
 
-### ⚡ Fast & Efficient
+### ;) Fast & Efficient
 
 * Incremental indexing
 * Cached models
@@ -95,7 +94,7 @@ Understands:
 </td>
 <td>
 
-### 🎯 Better Answers
+### :} Better Answers
 
 * Source deduplication
 * CrossEncoder reranking
@@ -181,7 +180,7 @@ Understands:
 
 ---
 
-# 🚀 Getting Started
+#  Getting Started
 
 ## Clone the Repository
 
@@ -269,11 +268,11 @@ Python
 Contributions are welcome and greatly appreciated.
 
 ```bash
-Fork 🍴
-Clone 📥
-Create a Branch 🌿
-Commit ✨
-Open a Pull Request 🚀
+Fork 
+Clone 
+Create a Branch 
+Commit 
+Open a Pull Request 
 ```
 
 If you have ideas, feature requests, or improvements, open an issue and let's build a better second brain together.
@@ -293,7 +292,7 @@ If OBSIZEN helped you organize your knowledge and think better:
 
 <div align="center">
 
-# 🌌 Built with ❤️ by Sudeep Mukul
+# 🌌 Built with <3 by Sudeep Mukul & Zency R&D Team
 
 ### Transform your notes into an AI-powered second brain.
 
